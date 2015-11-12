@@ -27,8 +27,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ListView msgListView;
     private EditText inputText;
     private Button send;
-    private static final String send_name = "小家伙";
-    private static final String receive_name = "小冰";
+    private static final String send_name = "二货";
+    private static final String receive_name = "智者";
     private MsgAdapter adapter;
     private List<Msg> msgList = new ArrayList<Msg>();
     private static final int SHOW_RESPONSE = 0;

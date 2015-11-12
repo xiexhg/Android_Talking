@@ -77,3 +77,4 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         TextView rightUsrName;
     }
 }
+
