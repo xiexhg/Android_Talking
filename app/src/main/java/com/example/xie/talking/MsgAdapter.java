@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -16,10 +17,19 @@ import java.util.List;
  */
 public class MsgAdapter extends ArrayAdapter<Msg> {
     private int resourceId;
-    public MsgAdapter(Context context,int textViewResourceId,List<Msg> objects) {
-        super(context,textViewResourceId,objects);
+   /* private static final int leftresourceId  = R.layout.left_msg;
+    private static final int rightresourceId  = R.layout.right_msg;*/
+   /* public int getResourceId(int Type)
+    {
+        if(Type==Msg.TYPE_RECEIVED)
+            return leftresourceId;
+        else
+            return rightresourceId;
+    }*/
+    public MsgAdapter(Context context,int resourceId,List<Msg> objects) {
+        super(context,resourceId,objects);
+        this.resourceId = resourceId;
         Log.i("talking", "init MsgAdapter");
-        resourceId = textViewResourceId;
     }
 
     @Override
@@ -30,34 +40,40 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         if(convertView == null){
             view = LayoutInflater.from(getContext()).inflate(resourceId,null);
             viewHolder = new ViewHolder();
-            viewHolder.leftLayout = (LinearLayout) view.findViewById(R.id.left_layout);
-            viewHolder.rightLayout = (LinearLayout) view.findViewById(R.id.right_layout);
-            viewHolder.leftMsg = (TextView) view.findViewById(R.id.left_msg);
-            viewHolder.rightMsg = (TextView) view.findViewById(R.id.right_msg);
+            viewHolder.leftMsgContent = (TextView) view.findViewById(R.id.left_msg);
+            viewHolder.leftUsrName = (TextView) view.findViewById(R.id.left_username);
+            viewHolder.leftLayOut = (RelativeLayout) view.findViewById(R.id.left_layout);
+            viewHolder.rightMsgContent = (TextView) view.findViewById(R.id.right_msg);
+            viewHolder.rightUsrName = (TextView) view.findViewById(R.id.right_username);
+            viewHolder.rightLayOut = (RelativeLayout) view.findViewById(R.id.right_layout);
             view.setTag(viewHolder);
         } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        System.out.printf("type is :%d \n",msg.getType());
         System.out.printf(msg.getContent());
-        Log.i("talking", String.format("%d", msg.getType()));
-        Log.i("talking",msg.getContent());
+        Log.i("talking", String.format("type:%d content:%s name:%s", msg.getType(), msg.getContent(),msg.getUserName()));
         if(msg.getType() == Msg.TYPE_RECEIVED){
-            viewHolder.leftLayout.setVisibility(view.VISIBLE);
-            viewHolder.rightLayout.setVisibility(view.GONE);
-            viewHolder.leftMsg.setText(msg.getContent());
+            viewHolder.leftLayOut.setVisibility(view.VISIBLE);
+            viewHolder.rightLayOut.setVisibility(view.GONE);
+            viewHolder.leftMsgContent.setText(msg.getContent());
+            viewHolder.leftUsrName.setText(msg.getUserName());
+
         } else  if(msg.getType() == Msg.TYPE_SEND){
-            viewHolder.rightLayout.setVisibility(view.VISIBLE);
-            viewHolder.leftLayout.setVisibility(view.GONE);
-            viewHolder.rightMsg.setText(msg.getContent());
+            viewHolder.rightLayOut.setVisibility(view.VISIBLE);
+            viewHolder.leftLayOut.setVisibility(view.GONE);
+            viewHolder.rightMsgContent.setText(msg.getContent());
+            viewHolder.rightUsrName.setText(msg.getUserName());
         }
+
         return view;
     }
     class ViewHolder {
-        LinearLayout leftLayout;
-        LinearLayout rightLayout;
-        TextView leftMsg;
-        TextView rightMsg;
+        RelativeLayout leftLayOut;
+        RelativeLayout rightLayOut;
+        TextView leftMsgContent;
+        TextView rightMsgContent;
+        TextView leftUsrName;
+        TextView rightUsrName;
     }
 }

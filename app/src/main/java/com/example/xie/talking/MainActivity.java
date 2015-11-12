@@ -22,12 +22,13 @@ import android.os.Handler;
 import java.net.URLEncoder;
 import org.json.JSONObject;
 
-import java.util.logging.LogRecord;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private ListView msgListView;
     private EditText inputText;
     private Button send;
+    private static final String send_name = "小家伙";
+    private static final String receive_name = "小冰";
     private MsgAdapter adapter;
     private List<Msg> msgList = new ArrayList<Msg>();
     private static final int SHOW_RESPONSE = 0;
@@ -41,7 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     try {
                         JSONObject json =  new JSONObject(respons);
                         String rsp = (String)json.get("text");
-                        Msg recmsg = new Msg(rsp,Msg.TYPE_RECEIVED);
+                        Msg recmsg = new Msg(rsp,receive_name,Msg.TYPE_RECEIVED);
                         msgList.add(recmsg);
                         adapter.notifyDataSetChanged();
                         msgListView.smoothScrollToPosition(adapter.getCount()-1);
@@ -76,7 +77,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Log.i("talking","send clicked");
             String content = inputText.getText().toString();
             if(!"".equals(content)){
-                Msg msg = new Msg(content,Msg.TYPE_SEND);
+                Msg msg = new Msg(content,send_name,Msg.TYPE_SEND);
                 msgList.add(msg);
                 adapter.notifyDataSetChanged();
                 msgListView.setSelection(msgList.size());
@@ -126,11 +127,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }).start();
     }
     private void initMsgs(){
-        Msg msg1 = new Msg("Hello guy.",Msg.TYPE_RECEIVED);
+        Msg msg1 = new Msg("Hello guy.",receive_name,Msg.TYPE_RECEIVED);
         msgList.add(msg1);
-        Msg msg2 = new Msg("Hello,ni hao.",Msg.TYPE_SEND);
+        Msg msg2 = new Msg("Hello,ni hao.",send_name,Msg.TYPE_SEND);
         msgList.add(msg2);
-        Msg msg3 = new Msg("This is xie.",Msg.TYPE_RECEIVED);
+        Msg msg3 = new Msg("This is xie.",receive_name,Msg.TYPE_RECEIVED);
         msgList.add(msg3);
 
     }
