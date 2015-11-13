@@ -2,6 +2,7 @@ package com.example.xie.talking;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -31,12 +32,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final String receive_name = "智者";
     private MsgAdapter adapter;
     private List<Msg> msgList = new ArrayList<Msg>();
-    private static final int SHOW_RESPONSE = 0;
+    public static final int RECEIVE_MSG = 0;
+    public static final int IMAGE_DONE = 1;
+    /*public  static enum message_type {
+        RECEIVE_MSG,
+        IMAGE_DONE;
+    };*/
     private static String preurl = "http://www.tuling123.com/openapi/api?key=2b9c12b2770d9bb3a9481ce66f72a449&info=";
     private Handler handler = new Handler() {
         public void  handleMessage(Message msg){
             switch (msg.what){
-                case SHOW_RESPONSE:
+                case RECEIVE_MSG:
                     String respons = (String) msg.obj;
                     Log.i("talking", respons);
                     try {
@@ -50,7 +56,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     } catch (Exception e)
                     {
                         e.printStackTrace();
-                    }
+                    };
+                    return;
+                case IMAGE_DONE:
+                    Bitmap bitmap = (Bitmap) msg.obj;
+
+                    return;
+                default:
+                    return;
+
 
             }
         }

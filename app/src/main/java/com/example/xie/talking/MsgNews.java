@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import org.json.JSONObject;
 import org.json.JSONException;
 import org.json.JSONArray;
-
+import java.util.List;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -13,13 +13,13 @@ import java.util.ArrayList;
  * Created by xie on 2015/11/13.
  */
 public class MsgNews extends Msg {
-    private ArrayList<News> newsArrayList;
+    private List<News> list;
     public MsgNews(String content,String user_name,int type,String list){
         super(content,user_name,type);
         initMsgNews(list);
     }
-    public ArrayList<News> getNewsArrayList(){
-        return newsArrayList;
+    public List<News> getList(){
+        return list;
     }
     private void initMsgNews(String list){
         try {
@@ -41,6 +41,11 @@ public class MsgNews extends Msg {
         {
             e.printStackTrace();
         }
+    }
+    public void setListIcon(int index,Bitmap bitmap){
+        News news =list.get(index);
+        news.news_icon = bitmap;
+        list.set(index,news);
     }
     class News{
         String article;
