@@ -69,12 +69,9 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         return view;
     }
     class ViewHolder {
-        RelativeLayout leftLayOut;
-        RelativeLayout rightLayOut;
-        TextView leftMsgContent;
-        TextView rightMsgContent;
-        TextView leftUsrName;
-        TextView rightUsrName;
+        RelativeLayout layOut;
+        TextView msgContent;
+        TextView usrName;
     }
 }
 
