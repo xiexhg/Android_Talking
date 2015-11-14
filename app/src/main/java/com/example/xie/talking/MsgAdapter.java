@@ -1,11 +1,13 @@
 package com.example.xie.talking;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,8 +18,10 @@ import java.util.List;
 /**
  * Created by xie on 2015/11/9.
  */
-public class MsgAdapter extends ArrayAdapter<Msg> {
+public class MsgAdapter extends BaseAdapter {
     private int resourceId;
+    private  List<Msg> msg_list;
+    private LayoutInflater mInflater;
    /* private static final int leftresourceId  = R.layout.left_msg;
     private static final int rightresourceId  = R.layout.right_msg;*/
    /* public int getResourceId(int Type)
@@ -27,26 +31,54 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         else
             return rightresourceId;
     }*/
-    public MsgAdapter(Context context,int resourceId,List<Msg> objects) {
-        super(context,resourceId,objects);
-        this.resourceId = resourceId;
-        Log.i("talking", "init MsgAdapter");
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
+    public Object getItem(int position) {
+        return msg_list.get(position);
+    }
+
+    @Override
+    public int getCount() {
+        return msg_list.size();
+    }
+
+    public MsgAdapter(Context context,List<Msg> objects) {
+        msg_list=objects;
+        mInflater=LayoutInflater.from(context);
+        Log.i("talking", "init MsgAdapter");
+    }
+
+    public ViewHolder initViewHolder(View view,ViewHolder viewHolder,Msg msg){
+        int msgtype = msg.getType();
+        viewHolder.msgContent = (TextView) view.findViewById(R.id.msg);
+        viewHolder.usrName = (TextView) view.findViewById(R.id.username);
+        if(msgtype==MsgType.NEWSMSG){
+            //MsgNews msgNews = (MsgNews)msg;
+            //MsgNews.News news = msgNews.getList().get(0);
+            viewHolder.list.content=(TextView) view.findViewById(R.id.message_name);
+            viewHolder.list.taital=(TextView) view.findViewById(R.id.message_content);
+            viewHolder.list.icon=(ImageView) view.findViewById(R.id.message_icon);
+
+        }
+        return viewHolder;
+    }
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Msg msg = getItem(position);
+        Msg msg = msg_list.get(position);
         View view;
-        ViewHolder viewHolder;
+        ViewHolder viewHolder = new ViewHolder();
         if(convertView == null){
-            view = LayoutInflater.from(getContext()).inflate(resourceId,null);
-            viewHolder = new ViewHolder();
-            viewHolder.leftMsgContent = (TextView) view.findViewById(R.id.left_msg);
-            viewHolder.leftUsrName = (TextView) view.findViewById(R.id.left_username);
-            viewHolder.leftLayOut = (RelativeLayout) view.findViewById(R.id.left_layout);
-            viewHolder.rightMsgContent = (TextView) view.findViewById(R.id.right_msg);
-            viewHolder.rightUsrName = (TextView) view.findViewById(R.id.right_username);
-            viewHolder.rightLayOut = (RelativeLayout) view.findViewById(R.id.right_layout);
+            if(msg.getType()==0){
+                view = mInflater.inflate(R.layout.right_msg, null);
+            } else{
+                view = mInflater.inflate(R.layout.left_msg, null);
+            }
+            viewHolder=initViewHolder(view,viewHolder,msg);
             view.setTag(viewHolder);
         } else {
             view = convertView;
@@ -54,26 +86,22 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         }
         System.out.printf(msg.getContent());
         Log.i("talking", String.format("type:%d content:%s name:%s", msg.getType(), msg.getContent(),msg.getUserName()));
-        if(msg.getType() == Msg.TYPE_RECEIVED){
-            viewHolder.leftLayOut.setVisibility(view.VISIBLE);
-            viewHolder.rightLayOut.setVisibility(view.GONE);
-            viewHolder.leftMsgContent.setText(msg.getContent());
-            viewHolder.leftUsrName.setText(msg.getUserName());
-
-        } else  if(msg.getType() == Msg.TYPE_SEND){
-            viewHolder.rightLayOut.setVisibility(view.VISIBLE);
-            viewHolder.leftLayOut.setVisibility(view.GONE);
-            viewHolder.rightMsgContent.setText(msg.getContent());
-            viewHolder.rightUsrName.setText(msg.getUserName());
+        viewHolder.msgContent.setText(msg.getContent());
+        viewHolder.usrName.setText(msg.getUserName());
+        if(msg.getType() == MsgType.NEWSMSG){
+            MsgNews.News news = ((MsgNews)msg).getList().get(0);
+            viewHolder.list.taital.setText(news.article);
+            viewHolder.list.content.setText(news.source);
+            if(news.news_icon!=null)
+                viewHolder.list.icon.setImageBitmap(news.news_icon);
         }
 
         return view;
     }
     class ViewHolder {
-        RelativeLayout layOut;
         TextView msgContent;
         TextView usrName;
-        List<ExtraList> list;
+        ExtraList list = new ExtraList() ;
     }
     class ExtraList{
         TextView taital;

@@ -1,6 +1,11 @@
 package com.example.xie.talking;
 
+import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by xie on 2015/11/12.
@@ -12,18 +17,18 @@ public class RemoteMessageHandle {
             String text = (String)json.get("text");
             int code = (int)json.get("code");
             Msg msg;
-            String list;
+
             switch (code){
                 case 100000:
                     msg = new Msg(text,name,code);
                     return msg;
                 case 200000:
-                    list = (String)json.get("url");
+                    String list = (String)json.get("url");
                     msg = new MsgLink(text,name,code,list);
                     return msg;
                 case 302000:
-                    list = (String)json.get("list");
-                    msg = new MsgNews(text,name,code,list);
+                    JSONArray jsonArray = json.getJSONArray("list");
+                    msg = new MsgNews(text,name,code,jsonArray);
                     return msg;
                 default:
                     return null;
@@ -36,5 +41,21 @@ public class RemoteMessageHandle {
         }
     }
 
+    public static void messageHandle(int node,int index,MainActivity activity,Msg msg){
+        switch (msg.getType()){
+            case MsgType.NEWSMSG:
+                    List<MsgNews.News> item = ((MsgNews)msg).getList();
+                    Log.i("talking",String.format("msgnews size:%d",item.size()));
+                    MsgNews.News news = item.get(0);
+                    if(news.icon_url!=""){
+                        //DownloadImageAsyncTask task = new DownloadImageAsyncTask(node, index,activity);
+                        //task.execute(news.icon_url);
+                    }
+                    return;
+                default:
+                    return;
+        }
+
+    }
 
 }

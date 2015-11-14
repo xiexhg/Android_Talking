@@ -3,6 +3,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -19,8 +20,7 @@ import java.util.List;
 public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
     private int node;
     private int index;
-    MsgAdapter adapter;
-    List<Msg> msgList;
+    MainActivity activity;
     private Bitmap getImageBitmap(String url){
         URL imgUrl = null;
         Bitmap bitmap = null;
@@ -37,14 +37,15 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
         }
         return bitmap;
     }
-    public void DownloadImageAsyncTask(int node,int index,MsgAdapter adapter,List<Msg> msgList){
+    public  DownloadImageAsyncTask(int node,int index,MainActivity activity){
         this.node = node;
         this.index = index;
-        this.adapter = adapter;
-        this.msgList = msgList;
+        this.activity = activity;
+
     }
     @Override
     protected Bitmap doInBackground(String... params) {
+        Log.i("talking",String.format("doInBackground url is :%s",params[0]));
         Bitmap b = getImageBitmap(params[0]);
 
         return b;
@@ -53,8 +54,8 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
-        MsgNews msg = (MsgNews)msgList.get(node);
-        List<News> = msg.getList(),
-        InternelHandler.sendMessage(message);
+        MsgNews msg = (MsgNews)activity.getMsgList().get(node);
+        msg.setListIcon(index,bitmap);
+        activity.updateMsgList(node,msg);
     }
 }

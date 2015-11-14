@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 case RECEIVE_MSG:
                     String respons = (String) msg.obj;
                     Log.i("talking", respons);
-                    try {
+                    /*try {
                         JSONObject json =  new JSONObject(respons);
                         String rsp = (String)json.get("text");
                         Msg recmsg = new Msg(rsp,receive_name,Msg.TYPE_RECEIVED);
@@ -53,10 +53,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         adapter.notifyDataSetChanged();
                         msgListView.smoothScrollToPosition(adapter.getCount()-1);
 
+
                     } catch (Exception e)
                     {
                         e.printStackTrace();
-                    };
+                    };*/
+                    Msg recmsg =RemoteMessageHandle.hanleMessage(respons,receive_name);
+                    msgList.add(recmsg);
+                    adapter.notifyDataSetChanged();
+                    int node = msgList.size();
+                    msgListView.smoothScrollToPosition(node-1);
+                    RemoteMessageHandle.messageHandle(node,1,MainActivity.this,recmsg);
                     return;
                 case IMAGE_DONE:
                     Bitmap bitmap = (Bitmap) msg.obj;
@@ -69,6 +76,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
     };
+
+    public List<Msg> getMsgList(){
+        return msgList;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +87,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         initMsgs();
         Log.i("talking", "init initMsgs");
-        adapter = new MsgAdapter(MainActivity.this,R.layout.msg_item,msgList);
+        adapter = new MsgAdapter(MainActivity.this,msgList);
         inputText = (EditText) findViewById(R.id.input_text);
         send = (Button) findViewById(R.id.send);
         msgListView =(ListView) findViewById(R.id.msg_list_view);
@@ -123,7 +134,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         response.append(line);
                     }
                     Message message = new Message();
-                    message.what = SHOW_RESPONSE;
+                    message.what = RECEIVE_MSG;
                     message.obj = response.toString();
                     handler.sendMessage(message);
                     //Msg recMsg =new Msg(response.toString(),Msg.TYPE_RECEIVED);
@@ -139,6 +150,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }
         }).start();
+    }
+    public void updateMsgList(int pos,Msg msg){
+        msgList.set(pos,msg);
     }
     private void initMsgs(){
         Msg msg1 = new Msg("Hello guy.",receive_name,Msg.TYPE_RECEIVED);
