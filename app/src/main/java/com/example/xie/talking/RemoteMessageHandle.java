@@ -27,8 +27,12 @@ public class RemoteMessageHandle {
                     msg = new MsgLink(text,name,code,list);
                     return msg;
                 case 302000:
-                    JSONArray jsonArray = json.getJSONArray("list");
-                    msg = new MsgNews(text,name,code,jsonArray);
+                    JSONArray jsonNewArray = json.getJSONArray("list");
+                    msg = new MsgNews(text,name,code,jsonNewArray);
+                    return msg;
+                case 308000:
+                    JSONArray jsonMenuArray = json.getJSONArray("list");
+                    msg = new MsgMenu(text,name,code,jsonMenuArray);
                     return msg;
                 default:
                     return null;
@@ -52,7 +56,16 @@ public class RemoteMessageHandle {
                         //task.execute(news.icon_url);
                     }
                     return;
-                default:
+            case MsgType.COOKMSG:
+                    List<MsgMenu.Menu> menuItem = ((MsgMenu)msg).getList();
+                    Log.i("talking",String.format("menuItem size:%d",menuItem.size()));
+                    MsgMenu.Menu menu = menuItem.get(0);
+                    if(menu.icon_url!=""){
+                        DownloadImageAsyncTask task = new DownloadImageAsyncTask(node, index,activity);
+                        task.execute(menu.icon_url);
+                    }
+                    return;
+            default:
                     return;
         }
 

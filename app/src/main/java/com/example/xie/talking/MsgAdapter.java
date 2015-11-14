@@ -64,6 +64,10 @@ public class MsgAdapter extends BaseAdapter {
             viewHolder.list.taital=(TextView) view.findViewById(R.id.message_content);
             viewHolder.list.icon=(ImageView) view.findViewById(R.id.message_icon);
 
+        } else if(msgtype==MsgType.COOKMSG){
+            viewHolder.list.content=(TextView) view.findViewById(R.id.message_name);
+            viewHolder.list.taital=(TextView) view.findViewById(R.id.message_content);
+            viewHolder.list.icon=(ImageView) view.findViewById(R.id.message_icon);
         }
         return viewHolder;
     }

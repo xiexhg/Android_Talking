@@ -1,5 +1,7 @@
 package com.example.xie.talking;
 
+import java.util.List;
+
 /**
  * Created by xie on 2015/11/9.
  */
@@ -14,6 +16,9 @@ public class Msg {
         this.user_name = user_name;
         this.type=type;
     }
+    public List<T> getMsgList(){
+
+    };
     public String getContent(){
         return content;
     }

@@ -61,8 +61,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     Msg recmsg =RemoteMessageHandle.hanleMessage(respons,receive_name);
                     msgList.add(recmsg);
                     adapter.notifyDataSetChanged();
-                    int node = msgList.size();
-                    msgListView.smoothScrollToPosition(node-1);
+                    int node = msgList.size() - 1;
+                    msgListView.smoothScrollToPosition(node);
                     RemoteMessageHandle.messageHandle(node,1,MainActivity.this,recmsg);
                     return;
                 case IMAGE_DONE:
