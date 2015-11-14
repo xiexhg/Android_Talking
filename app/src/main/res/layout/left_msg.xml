@@ -37,6 +37,7 @@
             android:id="@+id/extra_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/msg"
             android:layout_marginTop="5dp">
             <ImageView
                 android:id="@+id/message_icon"
