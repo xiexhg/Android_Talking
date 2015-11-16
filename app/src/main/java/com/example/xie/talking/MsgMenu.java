@@ -46,6 +46,13 @@ public class MsgMenu extends Msg {
             //e.printStackTrace();
         }
     }
+
+    @Override
+    public List<Menu> getMsgList() {
+        //return super.getMsgList();
+        return list;
+    }
+
     public void setListIcon(int index,Bitmap bitmap){
         Menu news =list.get(index);
         news.icon = bitmap;

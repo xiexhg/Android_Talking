@@ -53,7 +53,8 @@ public class MsgAdapter extends BaseAdapter {
         Log.i("talking", "init MsgAdapter");
     }
 
-    public ViewHolder initViewHolder(View view,ViewHolder viewHolder,Msg msg){
+    public ViewHolder initViewHolder(View view ,Msg msg){
+        ViewHolder viewHolder = new ViewHolder();
         int msgtype = msg.getType();
         viewHolder.msgContent = (TextView) view.findViewById(R.id.msg);
         viewHolder.usrName = (TextView) view.findViewById(R.id.username);
@@ -75,34 +76,37 @@ public class MsgAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Msg msg = msg_list.get(position);
         View view;
-        ViewHolder viewHolder = new ViewHolder();
-        if(convertView == null){
+        ViewHolder viewHolder;
+        //if(convertView == null){
             if(msg.getType()==0){
                 view = mInflater.inflate(R.layout.right_msg, null);
             } else{
                 view = mInflater.inflate(R.layout.left_msg, null);
             }
-            viewHolder=initViewHolder(view,viewHolder,msg);
+
+            viewHolder=initViewHolder(view,msg);
+            viewHolder.pos=position;
             view.setTag(viewHolder);
-        } else {
+       /* } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
-        }
+        }*/
         System.out.printf(msg.getContent());
-        Log.i("talking", String.format("type:%d content:%s name:%s", msg.getType(), msg.getContent(),msg.getUserName()));
+        Log.i("talking", String.format("type:%d content:%s name:%s", msg.getType(), msg.getContent(), msg.getUserName()));
         viewHolder.msgContent.setText(msg.getContent());
         viewHolder.usrName.setText(msg.getUserName());
-        if(msg.getType() == MsgType.NEWSMSG){
-            MsgNews.News news = ((MsgNews)msg).getList().get(0);
-            viewHolder.list.taital.setText(news.article);
-            viewHolder.list.content.setText(news.source);
-            if(news.news_icon!=null)
-                viewHolder.list.icon.setImageBitmap(news.news_icon);
+        if(msg.getType() == MsgType.COOKMSG){
+            MsgMenu.Menu menu = (MsgMenu.Menu)msg.getMsgList().get(0);
+            viewHolder.list.taital.setText(menu.name);
+            viewHolder.list.content.setText(menu.info);
+            if(menu.icon!=null)
+                viewHolder.list.icon.setImageBitmap(menu.icon);
         }
-
+        Log.i("talking",String.format("$$$$$****position:%d index:%d",position,viewHolder.pos));
         return view;
     }
     class ViewHolder {
+        int pos ;
         TextView msgContent;
         TextView usrName;
         ExtraList list = new ExtraList() ;
@@ -113,4 +117,6 @@ public class MsgAdapter extends BaseAdapter {
         ImageView icon;
     }
 }
+
+
 

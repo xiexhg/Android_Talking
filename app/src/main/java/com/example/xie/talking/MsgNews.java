@@ -48,6 +48,11 @@ public class MsgNews extends Msg {
             //e.printStackTrace();
         }
     }
+    @Override
+    public List<News> getMsgList() {
+        //return super.getMsgList();
+        return list;
+    }
     public void setListIcon(int index,Bitmap bitmap){
         News news =list.get(index);
         news.news_icon = bitmap;

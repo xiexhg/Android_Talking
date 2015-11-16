@@ -1,5 +1,7 @@
 package com.example.xie.talking;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 /**
@@ -16,9 +18,14 @@ public class Msg {
         this.user_name = user_name;
         this.type=type;
     }
-    public List<T> getMsgList(){
+    public  <T> List<T> getMsgList(){
 
-    };
+        List<T> m = null;
+        return m;
+    }
+    public void setListIcon(int index,Bitmap bitmap) {
+        return;
+    }
     public String getContent(){
         return content;
     }

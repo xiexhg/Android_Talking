@@ -54,7 +54,8 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
-        (activity.getMsgList().get(node)).setListIcon(index,bitmap);
+        Msg msg = activity.getMsgList().get(node);
+        msg.setListIcon(index, bitmap);
         activity.updateMsgList(node,msg);
     }
 }

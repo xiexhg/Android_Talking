@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     adapter.notifyDataSetChanged();
                     int node = msgList.size() - 1;
                     msgListView.smoothScrollToPosition(node);
-                    RemoteMessageHandle.messageHandle(node,1,MainActivity.this,recmsg);
+                    RemoteMessageHandle.messageHandle(node,0,MainActivity.this,recmsg);
                     return;
                 case IMAGE_DONE:
                     Bitmap bitmap = (Bitmap) msg.obj;
@@ -102,7 +102,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Log.i("talking","send clicked");
             String content = inputText.getText().toString();
             if(!"".equals(content)){
-                Msg msg = new Msg(content,send_name,Msg.TYPE_SEND);
+                Msg msg = new Msg(content,send_name,MsgType.SENDMSG);
                 msgList.add(msg);
                 adapter.notifyDataSetChanged();
                 msgListView.setSelection(msgList.size());
@@ -153,14 +153,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     public void updateMsgList(int pos,Msg msg){
         msgList.set(pos,msg);
+        adapter.notifyDataSetChanged();
     }
     private void initMsgs(){
-        Msg msg1 = new Msg("Hello guy.",receive_name,Msg.TYPE_RECEIVED);
+        /*Msg msg1 = new Msg("Hello guy.",receive_name,Msg.TYPE_RECEIVED);
         msgList.add(msg1);
         Msg msg2 = new Msg("Hello,ni hao.",send_name,Msg.TYPE_SEND);
         msgList.add(msg2);
         Msg msg3 = new Msg("This is xie.",receive_name,Msg.TYPE_RECEIVED);
-        msgList.add(msg3);
+        msgList.add(msg3);*/
 
     }
 }
