@@ -58,10 +58,14 @@ public class MsgAdapter extends BaseAdapter {
         int msgtype = msg.getType();
         viewHolder.msgContent = (TextView) view.findViewById(R.id.msg);
         viewHolder.usrName = (TextView) view.findViewById(R.id.username);
+
         if(msgtype > MsgType.NORMALMSG){
             viewHolder.list.taital=(TextView) view.findViewById(R.id.message_name);
             viewHolder.list.content=(TextView) view.findViewById(R.id.message_content);
             viewHolder.list.icon=(ImageView) view.findViewById(R.id.message_icon);
+        } else if(msgtype == MsgType.NORMALMSG){
+            viewHolder.layout = (RelativeLayout)view.findViewById(R.id.extra_info);
+            Log.i("talking","findViewById at"+viewHolder.layout);
         }
         return viewHolder;
 
@@ -101,6 +105,9 @@ public class MsgAdapter extends BaseAdapter {
             viewHolder.list.content.setText(item.source);
             if(item.news_icon!=null)
                 viewHolder.list.icon.setImageBitmap(item.news_icon);
+        } else if(msg.getType() == MsgType.NORMALMSG) {
+            Log.i("talking","layout at:"+viewHolder.layout);
+            viewHolder.layout.setVisibility(View.GONE);
         }
         Log.i("talking",String.format("$$$$$****position:%d index:%d",position,viewHolder.pos));
         return view;
@@ -109,11 +116,13 @@ public class MsgAdapter extends BaseAdapter {
         int pos ;
         TextView msgContent;
         TextView usrName;
+        RelativeLayout layout;
         ExtraList list = new ExtraList() ;
     }
     class ExtraList{
         TextView taital;
         TextView content;
+
         ImageView icon;
     }
 }
