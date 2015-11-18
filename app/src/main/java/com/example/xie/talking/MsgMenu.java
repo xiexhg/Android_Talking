@@ -12,12 +12,12 @@ import java.util.List;
  * Created by xie on 2015/11/14.
  */
 public class MsgMenu extends Msg {
-    public List<Menu> list = new ArrayList<Menu>();
+    public List<Item> list = new ArrayList<Item>();
     public MsgMenu(String content,String user_name,int type,JSONArray jsonArray){
         super(content,user_name,type);
         initMsgMenu(jsonArray);
     }
-    public List<Menu> getList(){
+    public List<Item> getList(){
         return list;
     }
     private void initMsgMenu(JSONArray jsonArray){
@@ -28,7 +28,7 @@ public class MsgMenu extends Msg {
                 length = json.length();
 
             for(int i=0; i<length;i++){
-                Menu menu = new Menu();
+                Item menu = new Item();
                 menu.name = json.getJSONObject(i).getString("name");
                 Log.i("talking", menu.name);
                 menu.info = json.getJSONObject(i).getString("info");
@@ -48,17 +48,17 @@ public class MsgMenu extends Msg {
     }
 
     @Override
-    public List<Menu> getMsgList() {
+    public List<Item> getMsgList() {
         //return super.getMsgList();
         return list;
     }
 
     public void setListIcon(int index,Bitmap bitmap){
-        Menu news =list.get(index);
-        news.icon = bitmap;
-        list.set(index,news);
+        Log.i("talking","setListIcon  at msgmenu");
+        Item Menu =list.get(index);
+        Menu.icon = bitmap;
     }
-    public class Menu{
+    public class Item{
         String name;
         String info;
         String icon_url;

@@ -58,19 +58,13 @@ public class MsgAdapter extends BaseAdapter {
         int msgtype = msg.getType();
         viewHolder.msgContent = (TextView) view.findViewById(R.id.msg);
         viewHolder.usrName = (TextView) view.findViewById(R.id.username);
-        if(msgtype==MsgType.NEWSMSG){
-            //MsgNews msgNews = (MsgNews)msg;
-            //MsgNews.News news = msgNews.getList().get(0);
-            viewHolder.list.content=(TextView) view.findViewById(R.id.message_name);
-            viewHolder.list.taital=(TextView) view.findViewById(R.id.message_content);
-            viewHolder.list.icon=(ImageView) view.findViewById(R.id.message_icon);
-
-        } else if(msgtype==MsgType.COOKMSG){
-            viewHolder.list.content=(TextView) view.findViewById(R.id.message_name);
-            viewHolder.list.taital=(TextView) view.findViewById(R.id.message_content);
+        if(msgtype > MsgType.NORMALMSG){
+            viewHolder.list.taital=(TextView) view.findViewById(R.id.message_name);
+            viewHolder.list.content=(TextView) view.findViewById(R.id.message_content);
             viewHolder.list.icon=(ImageView) view.findViewById(R.id.message_icon);
         }
         return viewHolder;
+
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -96,11 +90,17 @@ public class MsgAdapter extends BaseAdapter {
         viewHolder.msgContent.setText(msg.getContent());
         viewHolder.usrName.setText(msg.getUserName());
         if(msg.getType() == MsgType.COOKMSG){
-            MsgMenu.Menu menu = (MsgMenu.Menu)msg.getMsgList().get(0);
-            viewHolder.list.taital.setText(menu.name);
-            viewHolder.list.content.setText(menu.info);
-            if(menu.icon!=null)
-                viewHolder.list.icon.setImageBitmap(menu.icon);
+            MsgMenu.Item item = (MsgMenu.Item)msg.getMsgList().get(0);
+            viewHolder.list.taital.setText(item.name);
+            viewHolder.list.content.setText(item.info);
+            if(item.icon!=null)
+                viewHolder.list.icon.setImageBitmap(item.icon);
+        } else if(msg.getType() == MsgType.NEWSMSG){
+            MsgNews.Item item = (MsgNews.Item)msg.getMsgList().get(0);
+            viewHolder.list.taital.setText(item.article);
+            viewHolder.list.content.setText(item.source);
+            if(item.news_icon!=null)
+                viewHolder.list.icon.setImageBitmap(item.news_icon);
         }
         Log.i("talking",String.format("$$$$$****position:%d index:%d",position,viewHolder.pos));
         return view;

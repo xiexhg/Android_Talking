@@ -14,12 +14,12 @@ import java.util.ArrayList;
  * Created by xie on 2015/11/13.
  */
 public class MsgNews extends Msg {
-    public List<News> list = new ArrayList<News>();
+    public List<Item> list = new ArrayList<Item>();
     public MsgNews(String content,String user_name,int type,JSONArray jsonArray){
         super(content,user_name,type);
         initMsgNews(jsonArray);
     }
-    public List<News> getList(){
+    public List<Item> getList(){
         return list;
     }
     private void initMsgNews(JSONArray jsonArray){
@@ -30,7 +30,7 @@ public class MsgNews extends Msg {
                 length = json.length();
 
             for(int i=0; i<length;i++){
-                News news = new News();
+                Item news = new Item();
                 news.article = json.getJSONObject(i).getString("article");
                 Log.i("talking",news.article);
                 news.source = json.getJSONObject(i).getString("source");
@@ -49,16 +49,16 @@ public class MsgNews extends Msg {
         }
     }
     @Override
-    public List<News> getMsgList() {
+    public List<Item> getMsgList() {
         //return super.getMsgList();
         return list;
     }
     public void setListIcon(int index,Bitmap bitmap){
-        News news =list.get(index);
+        Item news =list.get(index);
         news.news_icon = bitmap;
         list.set(index,news);
     }
-    public class News{
+    public class Item{
         String article;
         String source;
         String icon_url;

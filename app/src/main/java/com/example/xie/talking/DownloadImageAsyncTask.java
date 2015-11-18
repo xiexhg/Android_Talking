@@ -18,9 +18,10 @@ import java.util.List;
  * Created by xie on 2015/11/13.
  */
 public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
-    private int node;
-    private int index;
-    MainActivity activity;
+    private Bitmap setIcon;
+    private Msg msg;
+    //private int index;
+    //MainActivity activity;
     private Bitmap getImageBitmap(String url){
         URL imgUrl = null;
         Bitmap bitmap = null;
@@ -37,10 +38,10 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
         }
         return bitmap;
     }
-    public  DownloadImageAsyncTask(int node,int index,MainActivity activity){
-        this.node = node;
-        this.index = index;
-        this.activity = activity;
+    public  DownloadImageAsyncTask(Msg msg){
+        this.msg = msg;
+        //this.index = index;
+        //this.activity = activity;
 
     }
     @Override
@@ -53,9 +54,11 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        super.onPostExecute(bitmap);
-        Msg msg = activity.getMsgList().get(node);
+        Log.i("talking","onPostExecute msg is at:"+msg);
+        msg.setListIcon(0,bitmap);
+        //super.onPostExecute(bitmap);
+        /*Msg msg = activity.getMsgList().get(node);
         msg.setListIcon(index, bitmap);
-        activity.updateMsgList(node,msg);
+        activity.updateMsgList(node,msg);*/
     }
 }
