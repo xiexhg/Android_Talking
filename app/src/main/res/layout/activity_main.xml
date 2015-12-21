@@ -5,7 +5,7 @@
     android:background="#F7FFD6"
     android:orientation="vertical">
     <ListView
-        android:id="@+id/msg_list_view"
+        android:id="@+id/chart_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -13,21 +13,6 @@
 
     </ListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/input_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="type something here"
-            android:maxLines="2"/>
-        <Button
-            android:id="@+id/send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send"/>
-    </LinearLayout>
+
 
 </LinearLayout>
